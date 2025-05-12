@@ -1,0 +1,5 @@
+qdrant-client
+PyPDF2
+python-dotenv
+google-generativeai
+tqdm
