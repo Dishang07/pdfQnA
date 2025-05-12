@@ -1,6 +1,6 @@
-# 📄 PDF Q&A System with RAG using Qdrant & Gemini
+# 📄 Document Q&A System with RAG using Qdrant & Gemini
 
-This project is a **PDF Question Answering Web App** powered by **Qdrant vector search** and **Gemini 1.5 LLM**. Users can upload documents, ask natural language questions, and receive precise answers sourced directly from the document content using **Retrieval-Augmented Generation (RAG)**.
+This project is a **Document Question Answering Web App** powered by **Qdrant vector search** and **Gemini 1.5 LLM**. Users can upload documents, ask natural language questions, and receive precise answers sourced directly from the document content using **Retrieval-Augmented Generation (RAG)**.
 
 ---
 
@@ -8,7 +8,7 @@ This project is a **PDF Question Answering Web App** powered by **Qdrant vector 
 
 - 🧠 Semantic search with Qdrant vector database
 - 🤖 Context-aware answer generation using Gemini 1.5
-- 📂 Supports `.pdf` documents
+- 📂 Supports `.pdf`, `.docx`, `.csv` documents
 - 🗣️ Gracefully handles unanswerable questions
 - 📱 Mobile-responsive UI built with Bootstrap
 
@@ -21,13 +21,13 @@ This project is a **PDF Question Answering Web App** powered by **Qdrant vector 
 - **Vector DB**: Qdrant Cloud / Self-hosted
 - **Embedding Model**: Gemini 1.5 Embeddings
 - **LLM**: Gemini 1.5 Flash
-- **Document Parsing**: `PyPDF2`
+- **Document Parsing**: `PyPDF2`,`python-docx`
 
 ---
 
 ## 📸 How It Works
 
-1. Upload a `.pdf` file.
+1. Upload a `.pdf`,`.docx`,`.csv` file.
 2. Enter a question in natural language.
 3. The system:
    - Extracts and chunks the text

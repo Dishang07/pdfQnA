@@ -1,16 +1,16 @@
 import tensorflow as tf
 tf.get_logger().setLevel('ERROR')
 import os
+#import pandas as pd 
+
 from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
-from pdf_parser import extract_text_from_pdf
+from pdf_parser import extract_text  # Unified extractor for PDF, DOCX, CSV
 from chunk_embed import chunk_text, get_embeddings, embed_query
 from qdrant_manager import setup_collection, upload_to_qdrant, search_chunks
 from rag_answer import generate_answer
-
-
 
 load_dotenv()
 QDRANT_API_KEY = os.getenv('QDRANT_API_KEY')
@@ -27,28 +27,34 @@ COLLECTION_NAME = "pdf_collection"
 def index():
     answer = ""
     if request.method == 'POST':
-        pdf = request.files.get('pdf')
+        uploaded_file = request.files.get('pdf')  # Can be PDF/DOCX/CSV
         question = request.form.get('question')
 
-        if pdf:
-            filename = secure_filename(pdf.filename)
+        if uploaded_file:
+            filename = secure_filename(uploaded_file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            pdf.save(filepath)
+            uploaded_file.save(filepath)
 
-            text = extract_text_from_pdf(filepath)
-            chunks = chunk_text(text)
-            embeddings = get_embeddings(chunks)
+            try:
+                text = extract_text(filepath)
+                chunks = chunk_text(text)
+                embeddings = get_embeddings(chunks)
 
-            setup_collection(COLLECTION_NAME)
-            upload_to_qdrant(COLLECTION_NAME, chunks, embeddings)
+                setup_collection(COLLECTION_NAME)
+                upload_to_qdrant(COLLECTION_NAME, chunks, embeddings)
+            except Exception as e:
+                answer = f"Error processing file: {e}"
 
         if question:
-            query_vector = embed_query(question)
-            context_chunks = search_chunks(COLLECTION_NAME, query_vector)
-            context = " ".join(context_chunks)
-            answer = generate_answer(context, question)
+            try:
+                query_vector = embed_query(question)
+                context_chunks = search_chunks(COLLECTION_NAME, query_vector)
+                context = " ".join(context_chunks)
+                answer = generate_answer(context, question)
+            except Exception as e:
+                answer = f"Error generating answer: {e}"
 
     return render_template('index.html', answer=answer)
 
 if __name__ == "__main__":
-    app.run(debug=True)  # This starts the Flask app
+    app.run(debug=True)

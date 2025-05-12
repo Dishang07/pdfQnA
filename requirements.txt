@@ -3,3 +3,4 @@ PyPDF2
 python-dotenv
 google-generativeai
 tqdm
+pandas
