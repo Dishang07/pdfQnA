@@ -1,4 +1,4 @@
-# 📄 PDF Q&A System with RAG using Qdrant & Gemini 1.5
+# 📄 PDF Q&A System with RAG using Qdrant & Gemini
 
 This project is a **PDF Question Answering Web App** powered by **Qdrant vector search** and **Gemini 1.5 LLM**. Users can upload documents, ask natural language questions, and receive precise answers sourced directly from the document content using **Retrieval-Augmented Generation (RAG)**.
 
